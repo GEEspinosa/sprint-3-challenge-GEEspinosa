@@ -45,7 +45,8 @@
     // ❗ Debug properly using the Console
 
     // 👉 CHALLENGE 1 - Integers
-    class Integers {
+    
+      
       // 🧠 Constructor takes **any** number of arguments, which are integers
       // 🧠 Instances have an `ints` property which is an array holding the integers above in the same order
       // 🧠 Implement a `getAll` method which returns the data held in the `ints` property
@@ -58,6 +59,61 @@
       // 🧠 Implement a `getAllReversed` method which returns the ints in reverse order
       // ❗ WARNING: except for `getAllReversed`, methods must respect the order of the integers
       // ❗ WARNING: note that none of the methods actually mutate the `ints` property
+      class Integers {
+
+        constructor(...num){
+          this.ints = num
+        }
+
+        getAll(){
+          return this.ints
+        }
+
+        getEvens(){
+          let even = [];
+          for (let i = 0; i < this.ints.length; i++){
+            if (this.ints[i] % 2 === 0) {even.push(this.ints[i])}
+          }
+          return even
+        }
+
+        getNegatives(){
+          let neg = []
+          for (let i = 0; i < this.ints.length; i++){
+            if (this.ints[i] < 0){neg.push(this.ints[i])}
+          }
+          return neg
+        }
+
+        getAllSquared(){
+          let squared = []
+          for (let i = 0; i < this.ints.length; i++){squared.push(this.ints[i] ** 2)}
+          return squared
+        }
+
+        pop(){
+          let popped = this.ints.pop()
+          return popped
+        }
+
+        push(int){
+          this.ints.push(int)
+          return this.ints
+        }
+
+        getEveryNth(n){
+          let everyNth = []
+          for (let i = 0; i < this.ints.length; i += n){ 
+           everyNth.push(this.ints[i])
+          }
+          return everyNth 
+        }
+
+        getAllReversed(){
+          let reversed = this.ints.reverse()
+          return reversed
+        }
+       
 
     }
 
@@ -77,6 +133,43 @@
       //      * When disengaging the safety, return "Safety disabled!"
       // 🌟 HINT: instances need to keep track of their maximum capacity as well as their current capacity
 
+      constructor(total){
+        this.loaded = total
+        this.max = total
+        this.safety = true
+      }
+     
+
+      shoot(){
+        if (this.loaded > 0 && !this.safety) {
+          this.loaded--;
+          return 'Bang!' 
+        } 
+        else {return 'Click!'}  
+      }
+
+      reload(num){
+        if (num < 1){return "Error reloading!" }
+        if (typeof num === 'string'){return "Error reloading!"}
+        if (this.loaded + num > this.max) {this.loaded = this.max
+          return `${this.loaded} projectiles left!`
+        } 
+        else {
+          this.loaded += num
+          return `${this.loaded} projectiles left!`
+          }
+        } 
+    
+      toggleSafety(){
+        if (this.safety) {
+          this.safety = false;
+          return 'Safety disabled!'
+        }
+        if (!this.safety){
+          this.safety = true;
+          return 'Safety enabled!'
+        }
+      }
     }
 
     // 👉 CHALLENGE 3 EBook
@@ -95,7 +188,19 @@
       //    ebook.next() // returns null
       // 🌟 HINT: remember about the `slice` method which strings and arrays have
       // ❗ Feel free to implement `back`, although this is not required nor graded
-
+      constructor (str, num){
+        this.text = str
+        this.page = num
+        this.begin = 0
+      }
+        
+      next(){ 
+        let full = this.text.slice(this.begin, this.page);
+        this.begin += full.length
+        this.page += full.length
+        if (full === ''){return null}
+        return full
+      }
     }
 
     // 👉 CHALLENGE 4 AntFarm
@@ -131,8 +236,52 @@
       // 👉 HINT: if you are not feeling confident with map and filter, solve the problem with for loops,
       //      and with the piece of mind of all tests passing, refactor to use map/filter
 
+      
+      constructor (...names){
+        this.ants = []
+        names.forEach((name) => {
+        let ant = {
+          name: name,
+          health: 100
+        }
+        this.ants.push(ant)
+        })   
+      }
+
+      work (){
+        let worker = this.ants.length
+        this.ants.map((ant) => {
+          if (ant.health <= 0){worker--}
+          ant.health -= 20   
+        })
+        
+        const newAnt = this.ants.filter ((ant) => ant.health > 0)
+        this.ants = newAnt
+
+        return worker > 0 ? `${worker} ants starting work!` : "No ants here. Did you work them to death?"
+      }
+      
+      feed(hungryAnts){
+        let fed = 0
+        
+        this.ants.forEach((ant, idx) => { 
+        if (ant.name === hungryAnts) {ant.health += 15; fed ++; }
+         
+       
+        })
+       
+        return (fed > 0) ? "Yum!" : `${hungryAnts} not found!`
+        
+      }
+        
     }
 
+
+    
+
+      
+    
+    
     // 🧪 TESTS, do not make any changes below this line ===================
     // 🧪 TESTS, do not make any changes below this line ===================
     // 🧪 TESTS, do not make any changes below this line ===================
